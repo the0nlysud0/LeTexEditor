@@ -34,8 +34,9 @@ mkdir build && cd build
 cmake ..
 make
 ./LeTexEditor
-Make sure all dependencies are installed and available in your compiler/toolchain.
 ```
+Make sure all dependencies are installed and available in your compiler/toolchain.
+
 ## File Structure
 LeTexEditor/
 ├── Assets/
