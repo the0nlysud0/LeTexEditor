@@ -32,7 +32,7 @@ git clone https://github.com/yourusername/LeTexEditor.git
 cd LeTexEditor
 mkdir build && cd build
 cmake ..
-make
+cmake --build .
 ./LeTexEditor
 ```
 Make sure all dependencies are installed and available in your compiler/toolchain.
