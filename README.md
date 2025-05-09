@@ -38,6 +38,7 @@ cmake --build .
 Make sure all dependencies are installed and available in your compiler/toolchain.
 
 ## File Structure
+```bash
 LeTexEditor/
 ├── Assets/
 │   ├── Fonts/
@@ -50,5 +51,5 @@ LeTexEditor/
 │   └── InputSystem.h
 ├── shaders/
 └── CMakeLists.txt
-
+```
 Made with 💻 by [Mehdi B] :)
