@@ -1,6 +1,6 @@
 # LeTexEditor 📝
 
-LeTexEditor is a lightweight OpenGL-based text editor built with C++, GLFW, and FreeType. It supports text rendering with zooming and scrolling, and provides basic input handling through a custom `InputSystem`.
+LeTexEditor is a lightweight OpenGL-based text editor built with C++, GLFW, and FreeType. It supports text rendering with zooming and scrolling, and provides basic input handling.
 
 ## Features
 
@@ -21,7 +21,7 @@ LeTexEditor is a lightweight OpenGL-based text editor built with C++, GLFW, and 
 ## Dependencies
 
 - [GLFW](https://www.glfw.org/)
-- [GLEW](http://glew.sourceforge.net/) or GLAD
+- [GLEW](http://glew.sourceforge.net/)
 - [FreeType](https://freetype.org/)
 - [GLM](https://github.com/g-truc/glm)
 
@@ -35,11 +35,8 @@ cmake ..
 make
 ./LeTexEditor
 Make sure all dependencies are installed and available in your compiler/toolchain.
-
-File Structure
-css
-Copy
-Edit
+```
+## File Structure
 LeTexEditor/
 ├── Assets/
 │   ├── Fonts/
@@ -52,7 +49,5 @@ LeTexEditor/
 │   └── InputSystem.h
 ├── shaders/
 └── CMakeLists.txt
-License
-MIT License – use it freely and contribute back if you find it useful.
 
 Made with 💻 by [Mehdi B] :)
