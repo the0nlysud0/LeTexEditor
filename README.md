@@ -28,7 +28,7 @@ LeTexEditor is a lightweight OpenGL-based text editor built with C++, GLFW, and 
 ## Build Instructions (CMake)
 
 ```bash
-git [clone https://github.com/yourusername/LeTexEditor.git](https://github.com/the0nlysud0/LeTexEditor.git)
+git https://github.com/the0nlysud0/LeTexEditor.git
 cd LeTexEditor
 mkdir build && cd build
 cmake ..
