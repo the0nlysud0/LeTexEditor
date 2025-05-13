@@ -28,6 +28,7 @@ int main(int argc, char** argv)
   TextRenderer text(argv[0]);
   ViewControl view(window , TextShader);
   InputSystem input(window, TextShader,argv[0]);
+  text.attachInputSystem(input);
   //text.loadFont("InputSans-Regular.ttf");
   while (!glfwWindowShouldClose(window)) {
     glClear(GL_COLOR_BUFFER_BIT);

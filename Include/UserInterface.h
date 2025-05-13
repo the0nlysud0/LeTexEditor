@@ -13,7 +13,7 @@ enum class DivType
   TextBox,
 };
 
-struct Triangle{};
+struct Triangle     {};
 struct TriangleOutline{};
 struct RoundedRectangle{};
 struct RoundedRectangleOutline{};

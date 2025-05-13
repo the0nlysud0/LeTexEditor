@@ -29,10 +29,23 @@ enum paths{
 };
 
 enum class FileType{
-  Image,
   Binary,
   Text,
 };
+
+inline FileType u_GetFileType(std::string path)
+{
+  // std::filesystem::path FilePath(path);
+  // std::string ext = FilePath.extension().string();
+  std::ifstream a(path);
+  int c;
+  while((c = a.get()) != EOF && c <=127);
+  if(c==EOF)
+  {
+    return FileType::Text;
+  }
+  return FileType::Binary;
+}
 
 inline std::string OpenFileDialog(const char* filter = "All Files\0*.*\0") {
   char filename[MAX_PATH] = { 0 };
@@ -53,21 +66,21 @@ inline std::string OpenFileDialog(const char* filter = "All Files\0*.*\0") {
   return "";
 }
 
-inline FileType GetFileType(const std::string& path)
-{
-    std::filesystem::path filePath(path);
-    std::string ext = filePath.extension().string();
+// inline FileType GetFileType(const std::string& path)
+// {
+//     std::filesystem::path filePath(path);
+//     std::string ext = filePath.extension().string();
 
-    if (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".bmp" || ext == ".gif") {
-        return FileType::Image;
-    } else if (ext == ".bin" || ext == ".dat"|| ext == ".exe") {
-        return FileType::Binary;
-    } else {
-        return FileType::Text;
-    }
-}
+//     if (ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".bmp" || ext == ".gif") {
+//         return FileType::Image;
+//     } else if (ext == ".bin" || ext == ".dat"|| ext == ".exe") {
+//         return FileType::Binary;
+//     } else {
+//         return FileType::Text;
+//     }
+// }
 
-inline std::string ReadTextFile(std::string FilePath)
+inline std::string u_ReadTextFile(std::string FilePath)
 {
   std::ifstream File(FilePath);
   if(!File.is_open())
@@ -82,7 +95,7 @@ inline std::string ReadTextFile(std::string FilePath)
   return iss.str();
 }
 
-inline std::vector<char> ReadBinaryFile(const std::string& path) {
+inline std::vector<char> u_ReadBinaryFile(const std::string& path) {
   std::ifstream file(path, std::ios::binary | std::ios::ate); // open at end
   if (!file.is_open()) {
       throw std::runtime_error("INFO::FILE::IO::failed to open binary file: " + path);
@@ -98,36 +111,53 @@ inline std::vector<char> ReadBinaryFile(const std::string& path) {
 
   return buffer;
 }
+inline std::string u_ReadBinaryAsString(const std::string& path) {
+    std::ifstream file(path, std::ios::binary | std::ios::ate);
+    if (!file.is_open()) {
+        LOG("ERROR::FILE::IO::Failed to open binary file: ", path, '\n');
+        return "";
+    }
 
-inline std::string ReadBinaryAsString(const std::string& path) {
-  std::ifstream file(path, std::ios::binary | std::ios::ate);
-  if (!file.is_open()) {
-      LOG("ERROR::FILE::IO::Failed to open binary file: ", path, '\n');
-      return "";
-  }
+    std::streamsize size = file.tellg();
+    
+    // Check if the file size is valid (non-negative)
+    if (size < 0) {
+        LOG("ERROR::FILE::IO::Failed to determine file size: ", path, '\n');
+        return "";
+    }
 
-  std::streamsize size = file.tellg();
-  file.seekg(0, std::ios::beg);
+    // Handle extremely large files (over 2GB)
+    if (size > 1024 * 1024 * 1024) {  // Example: Limit to 1GB files
+        LOG("ERROR::FILE::IO::File is too large to process: ", path, '\n');
+        return "";
+    }
 
-  std::string buffer(size, '\0');
-  if (!file.read(&buffer[0], size)) {
-      LOG("ERROR::FILE::IO::Failed to read binary file: ", path, '\n');
-      return "";
-  }
+    file.seekg(0, std::ios::beg);
 
-  return buffer;
+    std::string buffer(size, '\0');
+    if (!file.read(&buffer[0], size)) {
+        LOG("ERROR::FILE::IO::Failed to read binary file: ", path, '\n');
+        return "";
+    }
+
+    // Log only a small portion of the buffer or the size (for large files)
+    LOG("File read successfully, size: ", size, " bytes\n");
+    // Optional: log first 100 bytes if not too large
+    LOG("First 100 bytes (as raw):\n");
+    LOG(buffer.substr(0, std::min<std::streamsize>(100, size)), '\n');
+    return buffer;
 }
 
 
 inline std::string ReadFile(const std::string& FilePath)
 {
-  switch (GetFileType(FilePath))
+  switch (u_GetFileType(FilePath))
   {
   case FileType::Text:
-    return ReadTextFile(FilePath);
+    return u_ReadTextFile(FilePath);
     break;
   case FileType::Binary:
-    return ReadBinaryAsString(FilePath);
+    return u_ReadBinaryAsString(FilePath);
   default:
     return "";
     break;
